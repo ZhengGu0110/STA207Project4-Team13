@@ -400,7 +400,7 @@ for (i in seq(along = proportion)) {
     # 
     # learnCurve$trainError[i] <- 1-accuracy
     
-    trainError[i] <- 1-learning_curve$results$Accuracy
+    learnCurve$trainError[i] <- 1-learning_curve$results$Accuracy
 
     # use trained parameters to predict on test data
     prediction <- predict.train(learning_curve,
@@ -409,7 +409,7 @@ for (i in seq(along = proportion)) {
   
     conf.matrix.1 <- table(testY, prediction)
     accuracy <- sum(diag(conf.matrix.1)) / sum(conf.matrix.1) 
-    cvError[i] <- 1-accuracy
+    learnCurve$cvError[i] <- 1-accuracy
 }
 ```
 
@@ -510,9 +510,9 @@ pushViewport(vp.1)
 # start new base graphics in first viewport
 par(new=TRUE, fig=gridFIG())
 
-plot(x=c(1,2,3,4), xaxt = "n", trainError,type = "o",col = "red", xlab = "Training set size, as percentage",
+plot(x=c(1,2,3,4), xaxt = "n", learnCurve$trainError,type = "o",col = "red", xlab = "Training set size, as percentage",
           ylab = "Error Rate", ylim = c(0.08,0.19))
-lines(x=c(1,2,3,4), xaxt = "n", cvError, type = "o", col = "blue",ylim = c(0.08,0.19))
+lines(x=c(1,2,3,4), xaxt = "n", learnCurve$cvError, type = "o", col = "blue",ylim = c(0.08,0.19))
 axis(1, at=1:4, labels= proportion)
 legend('topright', c("Train error", "Test error"), lty = c(1,1), lwd = c(2.5, 2.5),
        col = c("red", "blue"))
