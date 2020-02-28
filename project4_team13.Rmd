@@ -283,7 +283,7 @@ While there are other hyperparameters that can affect the model, due to limited 
 
 * \textit{\textbf{Max depth}} Another feature to limit tree growth in some way is the max depth. The tree grown with a small max depth has a relatively high error rate since a tiny tree could be underfitting. Thus, it's essential to maintain a balance in tree size. However, trees with too many nodes overfit easily. 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 ## not run
 
 tunegrid<-expand.grid(mtry = seq(from = 4, to = 20, by = 4))
@@ -291,18 +291,18 @@ tunegrid<-expand.grid(mtry = seq(from = 4, to = 20, by = 4))
 metric <- 'Accuracy'
 control <- trainControl(method = 'cv', number = 10, classProbs = TRUE, summaryFunction = multiClassSummary)
 
-modellist<-list()
+modellist_final<-list()
 for (ntree in c(5, 10, 15, 20, 25, 30))
 {
 model_train <- train(y~., data = bank.t, method = "rf", tuneLength = 5, trControl = control, ntree=ntree, tuneGrid = tunegrid)
 # print(model_train)
 key <- toString(ntree)
-modellist[[key]] <-model_train
+modellist_final[[key]] <-model_train
 }
 ```
  
 ```{r fig.height = 4, fig.cap = "grid search results\\label{fig:grid}", fig.align = "center",fig.pos='H'}
-modellist_final <- readRDS(file = "modellist_final.rds")
+# modellist_final <- readRDS(file = "modellist_final.rds")
 # plots <- list() 
 # for (i in c(1,2)) {
 # name <- sprintf("tree %s", c(5, 10)[i])
@@ -362,7 +362,7 @@ text(x, accuracy, round(accuracy,4), cex=0.6, pos=4, col="red")
 
 Learning curves were plotted after setting a reasonable number of trees of 25, and the number of features sampled to split the node is 12 from the previous analysis. The train, test errors vs. various training examples are reflected in Fig \ref{fig:rf}. Here learning curves are used to evaluate the underfitting or overfitting of the overall algorithm. The training error starts from zero because a function can always be found that touches those number of points precisely. The training error starts increased as the training set gets larger, and the error value will plateau out after a particular training set size. On the contrary, the test errors start from high, which is because of the weak classifier trained from a small portion of instances, then slowly decreased. It showed that once the training size reached to a level, the error $error_{train}(\theta)$ and error $error_{test}(\theta)$ is close, this could indicate a bias of the algorithm. However, it may not be a high bias case since the $error_{test}(\theta)$ is still decreasing very slowly.
 
-```{r, echo = FALSE, eval = FALSE} 
+```{r, echo = FALSE, eval = TRUE} 
 ## not run
 ## plot the learning curve
 
@@ -418,8 +418,8 @@ for (i in seq(along = proportion)) {
 # plot learning curves of training set size vs. error measure
 # for training set and test set
 
-trainError <- readRDS(file = "learnCurve$trainError.rds")
-cvError <- readRDS(file = "learnCurve$cvError.rds")
+# trainError <- readRDS(file = "learnCurve$trainError.rds")
+# cvError <- readRDS(file = "learnCurve$cvError.rds")
 proportion <- c(0.01, 0.1, 0.5, 1)
 
 # plot(x=c(1,2,3,4), xaxt = "n", trainError,type = "o",col = "red", xlab = "Training set size",
@@ -432,7 +432,7 @@ proportion <- c(0.01, 0.1, 0.5, 1)
 
 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 ## not run
 trainControl <- trainControl(method="cv", summaryFunction = multiClassSummary, classProbs = TRUE)
 metric <- "Accuracy"
@@ -446,7 +446,7 @@ model_rf <- train(y~., data = bank.t, method="rf", metric=metric, trControl=trai
 library(ggplot2)
 library(dplyr)
 
-model_rf <- readRDS(file = "model_rf.rds")
+# model_rf <- readRDS(file = "model_rf.rds")
 ## plot roc curve
 
 rf_prediction <- predict(model_rf, bank.v[-21], type = "prob")
@@ -577,4 +577,15 @@ exp = data.frame('X_k,i'=x,'Denote'=vnames,'Beta_k'=as.numeric(coef))
 kable(exp,format='latex',digits = 2, longtable = TRUE)
 ```
 
+***
+Team ID: Course project group 13
 
+Name (responsibilities): Zheng Gu (Model fitting, Model Diagnostics, Polish Report)
+
+Name (responsibilities): Jieyun Wang (Background, Descriptive Analysis,Polish Report)
+
+Name (responsibilities): Siyao Wang ( Logistic modle,Model Fitting, Polish Report)
+
+Name (responsibilities): Zhi Zhang (Random Forests, Discussion,Polish Report)
+
+Github: https://github.com/ZhengGu0110/STA207Project4-Team13.git
