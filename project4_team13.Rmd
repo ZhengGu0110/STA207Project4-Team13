@@ -400,7 +400,7 @@ for (i in seq(along = proportion)) {
     # 
     # learnCurve$trainError[i] <- 1-accuracy
     
-    learnCurve$trainError[i] <- 1-learning_curve$results$Accuracy
+    trainError[i] <- 1-learning_curve$results$Accuracy
 
     # use trained parameters to predict on test data
     prediction <- predict.train(learning_curve,
@@ -409,7 +409,7 @@ for (i in seq(along = proportion)) {
   
     conf.matrix.1 <- table(testY, prediction)
     accuracy <- sum(diag(conf.matrix.1)) / sum(conf.matrix.1) 
-    learnCurve$cvError[i] <- 1-accuracy
+    cvError[i] <- 1-accuracy
 }
 ```
 
